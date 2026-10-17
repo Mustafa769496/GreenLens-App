@@ -32,7 +32,7 @@ _DEFAULTS = {
     "home_similar": None,
     "home_sig": None,
     "show_all_similar": False,
-    "top_k": 6,  # تم تثبيت عدد الصور المشابهة على 6 افتراضياً
+    "top_k": 6,  # تثبيت العدد على 6 صور افتراضياً
     "ar_mode": False,
     "dark_mode": False,
 }
@@ -104,9 +104,9 @@ TR = {
         "about_title": "About GreenLens",
         "about_sub": "AI-assisted plant health workspace.",
         "about_text": "GreenLens detects the most likely plant disease from a leaf image, gives practical care guidance, and finds visually similar images from the local dataset.",
-        "about_b1": "🔬 **Disease detection** – estimates the most likely condition from the supported classes.",
-        "about_b2": "🌱 **Care recommendations** – guidance based on the model prediction.",
-        "about_b3": "🖼️ **Similar plants** – visual search over the local dataset.",
+        "about_b1": "<b>Disease detection</b> – estimates the most likely condition from the supported classes.",
+        "about_b2": "<b>Care recommendations</b> – guidance based on the model prediction.",
+        "about_b3": "<b>Similar plants</b> – visual search over the local dataset.",
         "about_warn": "AI-assisted results should be verified before making treatment decisions.",
         "footer": "GreenLens | AI-assisted plant analysis. Predictions should be verified before making treatment decisions.",
         "report_title": "GreenLens - Plant Analysis Report",
@@ -170,9 +170,9 @@ TR = {
         "about_title": "عن GreenLens",
         "about_sub": "مساحة عمل لصحة النباتات بمساعدة الذكاء الاصطناعي.",
         "about_text": "يكتشف GreenLens المرض الأرجح للنبات من صورة الورقة، ويقدّم إرشادات عملية للعناية، ويبحث عن صور مشابهة بصريًا من قاعدة البيانات المحلية.",
-        "about_b1": "🔬 **اكتشاف المرض** – يقدّر الحالة الأرجح من التصنيفات المدعومة.",
-        "about_b2": "🌱 **توصيات العناية** – إرشادات مبنية على تنبؤ النموذج.",
-        "about_b3": "🖼️ **نباتات مشابهة** – بحث بصري داخل قاعدة البيانات المحلية.",
+        "about_b1": "<b>اكتشاف المرض</b> – يقدّر الحالة الأرجح من التصنيفات المدعومة.",
+        "about_b2": "<b>توصيات العناية</b> – إرشادات مبنية على تنبؤ النموذج.",
+        "about_b3": "<b>نباتات مشابهة</b> – بحث بصري داخل قاعدة البيانات المحلية.",
         "about_warn": "يجب التحقق من نتائج الذكاء الاصطناعي قبل اتخاذ قرارات العلاج.",
         "footer": "GreenLens | تحليل النباتات بمساعدة الذكاء الاصطناعي. يجب التحقق من التنبؤات قبل اتخاذ قرارات العلاج.",
         "report_title": "GreenLens - تقرير تحليل النبات",
@@ -544,7 +544,7 @@ def render_similar_grid(results, per_row: int = 6) -> None:
 
 
 # --------------------------------------------------
-# Sidebar (تم حُذف Settings)
+# Sidebar
 # --------------------------------------------------
 NAV_LABELS = {"home": t("nav_home"), "about": t("nav_about")}
 
@@ -785,13 +785,24 @@ if selected_page == "home":
 
 
 # ==================================================
-# PAGE: About
+# PAGE: About (تنسيق محاذاة يمين/يسار متناسق كلياً)
 # ==================================================
-else:
+elif selected_page == "about":
     with st.container(border=True):
         card_header("ℹ️", t("about_title"), t("about_sub"))
         st.write(t("about_text"))
-        st.markdown(f"- {t('about_b1')}\n- {t('about_b2')}\n- {t('about_b3')}")
+        
+        align_dir = "rtl" if IS_AR else "ltr"
+        st.markdown(
+            f"""
+            <div style="direction: {align_dir}; text-align: {'right' if IS_AR else 'left'}; margin: 1.2rem 0; line-height: 1.8;">
+                <div style="margin-bottom: 0.6rem;">🔬 {t('about_b1')}</div>
+                <div style="margin-bottom: 0.6rem;">🌱 {t('about_b2')}</div>
+                <div style="margin-bottom: 0.6rem;">🖼️ {t('about_b3')}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
         st.warning(t("about_warn"))
 
 
