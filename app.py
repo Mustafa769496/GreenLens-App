@@ -28,13 +28,13 @@ st.set_page_config(
 # --------------------------------------------------
 _DEFAULTS = {
     "page": "home",
-    "prediction_result": None,   # نتيجة التشخيص
-    "home_similar": None,        # الصور المشابهة
-    "home_sig": None,            # بصمة الصورة الحالية
-    "show_all_similar": False,   # View All / Show Less
-    "top_k": 12,                 # عدد الصور المشابهة اللي بنجيبها
-    "ar_mode": False,            # اللغة العربية
-    "dark_mode": False,          # الوضع الليلي
+    "prediction_result": None,
+    "home_similar": None,
+    "home_sig": None,
+    "show_all_similar": False,
+    "top_k": 12,
+    "ar_mode": False,
+    "dark_mode": False,
 }
 for _k, _v in _DEFAULTS.items():
     st.session_state.setdefault(_k, _v)
@@ -198,9 +198,7 @@ def t(key: str) -> str:
 
 
 # --------------------------------------------------
-# Arabic names for model output (UI-level only)
-# النموذج بيرجّع أسماء إنجليزي، فبنترجمها هنا عند العرض بدون ما نغيّر الباك إند.
-# لو ظهر اسم/جملة مش مترجمة، أضفها في القواميس دي.
+# Arabic names for model output & Recommendations
 # --------------------------------------------------
 TERMS_AR = {
     # plants
@@ -234,14 +232,24 @@ TERMS_AR = {
 _TERMS_SORTED = sorted(TERMS_AR.items(), key=lambda kv: -len(kv[0]))
 
 ADVICE_AR = {
+    "inspect lower leaves for dark spots with concentric rings":
+        "افحص الأوراق السفلى بحثًا عن بقع داكنة تحتوي على حلقات مركزية.",
     "inspect leaves and fruits for olive-colored or dark lesions":
         "افحص الأوراق والثمار بحثًا عن بقع زيتونية اللون أو داكنة.",
+    "remove severely affected leaves when appropriate":
+        "أزل الأوراق المصابة بشدة متى كان ذلك مناسبًا.",
     "remove fallen infected leaves where practical":
         "أزل الأوراق المصابة المتساقطة متى كان ذلك عمليًا.",
+    "avoid overhead watering where practical":
+        "تجنب الري من الأعلى فوق الأوراق متى كان ذلك عمليًا.",
+    "monitor whether symptoms spread":
+        "راقب ما إذا كانت الأعراض تنتشر إلى باقي الأجزاء.",
     "improve airflow through appropriate pruning":
-        "حسّن التهوية عن طريق التقليم المناسب.",
+        "حسّن التهوية بين النباتات عن طريق التقليم المناسب.",
     "consult a local agricultural specialist about suitable disease management":
         "استشر مختصًا زراعيًا محليًا بشأن الإدارة المناسبة للمرض.",
+    "possible disease": "مرض محتمل",
+    "healthy": "سليم",
 }
 
 
@@ -250,7 +258,6 @@ def pretty(name) -> str:
 
 
 def ar_term(text) -> str:
-    """ترجمة اسم نبات/مرض لو العربي مفعّل، وإلا بيرجع النص زي ما هو."""
     text = pretty(text)
     if not IS_AR:
         return text
@@ -265,7 +272,8 @@ def ar_term(text) -> str:
 def ar_advice(text) -> str:
     if not IS_AR:
         return str(text)
-    return ADVICE_AR.get(str(text).strip().rstrip(".").lower(), str(text))
+    clean_text = str(text).strip().rstrip(".").lower()
+    return ADVICE_AR.get(clean_text, str(text))
 
 
 # --------------------------------------------------
@@ -448,7 +456,7 @@ st.markdown(f"<style>{ROOT_VARS}{STATIC_CSS}{DYNAMIC_CSS}{RTL_CSS}</style>", uns
 
 
 # --------------------------------------------------
-# Helpers (UI only - لا علاقة لها بمنطق المشروع)
+# Helpers
 # --------------------------------------------------
 def esc(value) -> str:
     return html.escape(str(value))
@@ -605,7 +613,7 @@ if selected_page == "home":
             image = None
             if uploaded_file is not None:
                 sig = (uploaded_file.name, uploaded_file.size)
-                if st.session_state.home_sig != sig:  # صورة جديدة -> امسح النتايج القديمة
+                if st.session_state.home_sig != sig:
                     st.session_state.home_sig = sig
                     st.session_state.prediction_result = None
                     st.session_state.home_similar = None
@@ -724,7 +732,8 @@ if selected_page == "home":
                         unsafe_allow_html=True,
                     )
                     if recommendation.get("status"):
-                        st.info(recommendation["status"])
+                        rec_status = ar_advice(recommendation["status"])
+                        st.info(rec_status)
 
                     st.markdown(f'<div class="care-title">{t("what_to_do")}</div>', unsafe_allow_html=True)
                     advice = recommendation.get("recommendations", [])
