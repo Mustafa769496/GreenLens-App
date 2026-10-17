@@ -228,6 +228,7 @@ TERMS_AR = {
     "yellow leaf curl virus": "فيروس تجعد واصفرار الأوراق",
     "tomato mosaic virus": "فيروس موزاييك الطماطم", "mosaic virus": "فيروس الموزاييك",
     "leaf scorch": "احتراق الأوراق",
+    "uncertain prediction": "تشخيص غير مؤكد",
 }
 _TERMS_SORTED = sorted(TERMS_AR.items(), key=lambda kv: -len(kv[0]))
 
@@ -248,6 +249,16 @@ ADVICE_AR = {
         "حسّن التهوية بين النباتات عن طريق التقليم المناسب.",
     "consult a local agricultural specialist about suitable disease management":
         "استشر مختصًا زراعيًا محليًا بشأن الإدارة المناسبة للمرض.",
+    "take a clear photo in good lighting":
+        "التقط صورة واضحة في إضاءة جيدة.",
+    "focus on the affected leaf and avoid blurry images":
+        "ركز على الورقة المصابة وتجنب الصور الضبابية.",
+    "try another image showing the symptoms clearly":
+        "جرب صورة أخرى تظهر فيها الأعراض بوضوح.",
+    "consult an agricultural specialist if symptoms persist":
+        "استشر أخصائيًا زراعيًا إذا استمرت الأعراض.",
+    "low model confidence":
+        "ثقة منخفضة بالنموذج",
     "possible disease": "مرض محتمل",
     "healthy": "سليم",
 }
