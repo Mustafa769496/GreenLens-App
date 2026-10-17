@@ -1,0 +1,25 @@
+# Python & Cache
+__pycache__/
+*.py[cod]
+*.pyd
+
+# Environments
+venv/
+.venv/
+env/
+
+# Datasets and Local Tests (لن ترفع على GitHub)
+dataset/
+image_for_test/
+evaluate_disease.py
+evaluate_similarity.py
+make_sample.py
+upload.py
+
+# Settings & Temporary files
+.env
+.vscode/
+.idea/
+.DS_Store
+*.log
+*.tmp
