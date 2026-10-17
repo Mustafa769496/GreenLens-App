@@ -32,7 +32,7 @@ _DEFAULTS = {
     "home_similar": None,
     "home_sig": None,
     "show_all_similar": False,
-    "top_k": 12,
+    "top_k": 6,  # تم تثبيت عدد الصور المشابهة على 6 افتراضياً
     "ar_mode": False,
     "dark_mode": False,
 }
@@ -51,7 +51,6 @@ TR = {
     "en": {
         "nav_home": "🏠  Home",
         "nav_about": "ℹ️  About",
-        "nav_settings": "⚙️  Settings",
         "brand_tag": "Healthy Plants &nbsp;•&nbsp; Better Tomorrow",
         "side_footer": "Healthy plants<br>support a healthier<br>planet 🌱",
         "side_prefs": "Preferences",
@@ -109,10 +108,6 @@ TR = {
         "about_b2": "🌱 **Care recommendations** – guidance based on the model prediction.",
         "about_b3": "🖼️ **Similar plants** – visual search over the local dataset.",
         "about_warn": "AI-assisted results should be verified before making treatment decisions.",
-        "set_title": "Settings",
-        "set_sub": "Adjust how GreenLens behaves.",
-        "topk_label": "Number of similar images to retrieve",
-        "topk_caption": "Applies to the next analysis.",
         "footer": "GreenLens | AI-assisted plant analysis. Predictions should be verified before making treatment decisions.",
         "report_title": "GreenLens - Plant Analysis Report",
         "report_date": "Date",
@@ -122,7 +117,6 @@ TR = {
     "ar": {
         "nav_home": "🏠  الرئيسية",
         "nav_about": "ℹ️  عن التطبيق",
-        "nav_settings": "⚙️  الإعدادات",
         "brand_tag": "نباتات صحية &nbsp;•&nbsp; غدٍ أفضل",
         "side_footer": "النباتات الصحية<br>تدعم كوكبًا<br>أكثر صحة 🌱",
         "side_prefs": "التفضيلات",
@@ -180,10 +174,6 @@ TR = {
         "about_b2": "🌱 **توصيات العناية** – إرشادات مبنية على تنبؤ النموذج.",
         "about_b3": "🖼️ **نباتات مشابهة** – بحث بصري داخل قاعدة البيانات المحلية.",
         "about_warn": "يجب التحقق من نتائج الذكاء الاصطناعي قبل اتخاذ قرارات العلاج.",
-        "set_title": "الإعدادات",
-        "set_sub": "اضبط طريقة عمل GreenLens.",
-        "topk_label": "عدد الصور المشابهة المطلوب عرضها",
-        "topk_caption": "يُطبَّق في التحليل القادم.",
         "footer": "GreenLens | تحليل النباتات بمساعدة الذكاء الاصطناعي. يجب التحقق من التنبؤات قبل اتخاذ قرارات العلاج.",
         "report_title": "GreenLens - تقرير تحليل النبات",
         "report_date": "التاريخ",
@@ -554,9 +544,9 @@ def render_similar_grid(results, per_row: int = 6) -> None:
 
 
 # --------------------------------------------------
-# Sidebar
+# Sidebar (تم حُذف Settings)
 # --------------------------------------------------
-NAV_LABELS = {"home": t("nav_home"), "about": t("nav_about"), "settings": t("nav_settings")}
+NAV_LABELS = {"home": t("nav_home"), "about": t("nav_about")}
 
 with st.sidebar:
     st.markdown(
@@ -659,7 +649,7 @@ if selected_page == "home":
                 try:
                     with st.spinner(t("searching")):
                         st.session_state.home_similar = search_similar_images(
-                            image, top_k=int(st.session_state.top_k)
+                            image, top_k=6  # العرض الافتراضي الثابت 6 صور
                         )
                 except Exception as error:
                     st.session_state.home_similar = []
@@ -797,28 +787,12 @@ if selected_page == "home":
 # ==================================================
 # PAGE: About
 # ==================================================
-elif selected_page == "about":
+else:
     with st.container(border=True):
         card_header("ℹ️", t("about_title"), t("about_sub"))
         st.write(t("about_text"))
         st.markdown(f"- {t('about_b1')}\n- {t('about_b2')}\n- {t('about_b3')}")
         st.warning(t("about_warn"))
-
-
-# ==================================================
-# PAGE: Settings
-# ==================================================
-else:
-    with st.container(border=True):
-        card_header("⚙️", t("set_title"), t("set_sub"))
-        st.session_state.top_k = st.slider(
-            t("topk_label"),
-            min_value=3,
-            max_value=12,
-            value=int(st.session_state.top_k),
-            step=1,
-        )
-        st.caption(t("topk_caption"))
 
 
 # --------------------------------------------------
