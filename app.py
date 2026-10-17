@@ -214,8 +214,8 @@ TERMS_AR = {
     "spider mites two-spotted spider mite": "العنكبوت الأحمر ذو البقعتين",
     "two-spotted spider mite": "العنكبوت الأحمر ذو البقعتين", "spider mites": "العنكبوت الأحمر",
     "target spot": "التبقع الهدفي",
-    "tomato yellow leaf curl virus": "فيروس تجعد واصفرار أوراق الطماطم",
-    "yellow leaf curl virus": "فيروس تجعد واصفرار الأوراق",
+    "tomato yellow leaf curl virus": "فيروس تجعد وااصفرار أوراق الطماطم",
+    "yellow leaf curl virus": "فيروس تجعد وااصفرار الأوراق",
     "tomato mosaic virus": "فيروس موزاييك الطماطم", "mosaic virus": "فيروس الموزاييك",
     "leaf scorch": "احتراق الأوراق",
     "uncertain prediction": "تشخيص غير مؤكد",
@@ -790,12 +790,20 @@ if selected_page == "home":
 elif selected_page == "about":
     with st.container(border=True):
         card_header("ℹ️", t("about_title"), t("about_sub"))
-        st.write(t("about_text"))
         
         align_dir = "rtl" if IS_AR else "ltr"
+        text_align = "right" if IS_AR else "left"
+        
+        # النص الوصفي الرئيسي بمحاذاة مضبوظة كلياً لليمن عند اختيار اللغة العربية
+        st.markdown(
+            f'<div style="direction: {align_dir}; text-align: {text_align}; font-size: 1.05rem; margin-bottom: 1rem; color: var(--ink);">{esc(t("about_text"))}</div>',
+            unsafe_allow_html=True,
+        )
+        
+        # نقاط القائمة الفرعية
         st.markdown(
             f"""
-            <div style="direction: {align_dir}; text-align: {'right' if IS_AR else 'left'}; margin: 1.2rem 0; line-height: 1.8;">
+            <div style="direction: {align_dir}; text-align: {text_align}; margin: 1.2rem 0; line-height: 1.8;">
                 <div style="margin-bottom: 0.6rem;">🔬 {t('about_b1')}</div>
                 <div style="margin-bottom: 0.6rem;">🌱 {t('about_b2')}</div>
                 <div style="margin-bottom: 0.6rem;">🖼️ {t('about_b3')}</div>
